@@ -15,7 +15,7 @@ export const Main = styled.div`
 `;
 
 export const LoginDiv = styled.div`
-  height: 20%;
+  height: 40%;
   margin-bottom: 100px;
   display: flex;
   flex-direction: column;
@@ -27,7 +27,7 @@ export const LoginDiv = styled.div`
   }
 
   div {
-    height: 50%;
+    height: 55%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -44,15 +44,29 @@ export const LoginDiv = styled.div`
         color: #000;
       }
     }
+
+    select {
+      width: 275px;
+      height: 30px;
+      border: 1px solid;
+      border-radius: 20px;
+      padding-left: 15px;
+
+      ::placeholder {
+        font-weight: 500;
+        color: #000;
+      }
+    }
   }
 
   button {
     width: 100%;
-    height: 35px;
+    height: 37px;
     border: 1px solid;
     border-radius: 20px;
     background-color: #000;
     color: #fff;
     cursor: pointer;
+    margin-bottom: 40px;
   }
 `;

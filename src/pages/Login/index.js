@@ -8,13 +8,15 @@ import Loading from "../../assets/loading.gif";
 const defaultFormFields = {
   user: "",
   password: "",
+  stage: "",
+  station: "",
 };
 
 export default function Login() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formFields, setFormFields] = useState(defaultFormFields);
-  const { user, password } = formFields;
+  const { user, password, stage, station } = formFields;
   const navigate = useNavigate();
 
   const handleChange = (event) => {
@@ -25,8 +27,7 @@ export default function Login() {
 
   async function SingUp() {
     setLoading(true);
-    let response;
-    if (!user || !password) {
+    if (!user || !password || !stage || !station) {
       setLoading(false);
       setError(true);
       return;
@@ -34,12 +35,9 @@ export default function Login() {
     setError(false);
 
     try {
-      response = await signUpService(user, password);
-      console.log(response);
+      const response = await signUpService(user, password, station, stage);
       setLoading(false);
-      // setTimeout(() => {
       navigate("/Home");
-      // }, 5000)
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -56,6 +54,25 @@ export default function Login() {
             value={user}
             onChange={handleChange}
           />
+
+          <select
+            onChange={handleChange}
+            name="stage"
+            placeholder="Insira sua etapa"
+          >
+            <option value="">Insira sua etapa</option>
+            <option value="corte">Corte</option>
+            <option value="laminacao">Laminação</option>
+            <option value="usinagem">Usinagem</option>
+          </select>
+
+          <input
+            placeholder="Insira sua estação"
+            name="station"
+            value={station}
+            onChange={handleChange}
+          />
+
           <input
             placeholder="Insira sua senha"
             name="password"

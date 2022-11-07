@@ -6,6 +6,7 @@ export const Main = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 `;
 
 export const MainDiv = styled.div`
@@ -17,6 +18,24 @@ export const MainDiv = styled.div`
   justify-content: center;
   align-items: center;
   animation-duration: 3s;
+
+  img {
+    width: 120px;
+    margin-left: 80px;
+  }
+
+  div {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+`;
+
+export const Span = styled.span`
+  font-weight: bold;
+  margin-bottom: -20px;
+
+  color: ${(props) => props.color};
 `;
 
 export const Input = styled.input`
@@ -43,5 +62,17 @@ export const Input = styled.input`
 
 export const ValidatorImage = styled.img`
   width: 120px;
-  margin-left: 100px;
+  margin-left: 80px;
+`;
+
+export const Button = styled.button`
+  width: 300px;
+  height: 40px;
+  border: 1px solid;
+  border-radius: 20px;
+  background-color: #000;
+  color: #fff;
+  cursor: pointer;
+  margin-right: 320px;
+  margin-bottom: 30px;
 `;

@@ -1,6 +1,7 @@
 import Login from "./pages/Login/index";
 import Home from "./pages/Home/index";
-// import Logs from "./pages/Logs/index";
+import Logs from "./pages/Logs/index";
+import Upload from "./pages/Upload/index";
 
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 
@@ -10,8 +11,8 @@ export default function Router() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/Home" element={<Home />} />
-        {/*<Route path="/success" element={<Success />} />
-        <Route path="/getUsers" element={<GetUsers />} /> */}
+        <Route path="/Logs" element={<Logs />} />
+        <Route path="/Upload" element={<Upload />} />
       </Routes>
     </BrowserRouter>
   );

@@ -33,7 +33,7 @@ export const MainDiv = styled.div`
 
 export const Span = styled.span`
   font-weight: bold;
-  margin-bottom: -20px;
+  margin-top: 20px;
 
   color: ${(props) => props.color};
 `;
@@ -45,6 +45,7 @@ export const Input = styled.input`
   border-color: ${(props) => props.color};
   border-radius: 20px;
   padding-left: 15px;
+  margin-top: 30px;
 
   ::placeholder {
     font-weight: 500;

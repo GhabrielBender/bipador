@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Main, LoginDiv } from "./styles.js";
 import { signUpService } from "../../service/signUp";
 import Loading from "../../assets/loading.gif";
+import { UserContext } from "../../contexts/user-context";
 
 const defaultFormFields = {
   user: "",
@@ -16,6 +17,8 @@ export default function Login() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formFields, setFormFields] = useState(defaultFormFields);
+  const { setCurrentUser } = useContext(UserContext);
+
   const { user, password, stage, station } = formFields;
   const navigate = useNavigate();
 
@@ -36,6 +39,7 @@ export default function Login() {
 
     try {
       const response = await signUpService(user, password, station, stage);
+      setCurrentUser(response.data);
       setLoading(false);
       navigate("/Home");
     } catch (error) {
@@ -61,7 +65,6 @@ export default function Login() {
             placeholder="Insira sua etapa"
           >
             <option value="">Insira sua etapa</option>
-            <option value="corte">Corte</option>
             <option value="laminacao">Laminação</option>
             <option value="usinagem">Usinagem</option>
           </select>

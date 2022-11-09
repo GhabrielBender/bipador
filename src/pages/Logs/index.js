@@ -3,13 +3,23 @@ import { styled } from "@mui/system";
 import TablePaginationUnstyled, {
   tablePaginationUnstyledClasses as classes,
 } from "@mui/base/TablePaginationUnstyled";
-import "react-datepicker/dist/react-datepicker.css";
 
-import searchIcon from "../../assets/searchIcon.png";
-import { Main, DivTable, SearchInput, InputDiv, Div } from "./styles";
-// 000168682629;
 import { getPerService } from "../../service/getPerService";
 import { getPerBarCode } from "../../service/getPerBarCode";
+
+import SearchIcon from "../../assets/searchIcon.png";
+import Made from "../../assets/correct.png";
+import NotMade from "../../assets/error.jpg";
+import Loading from "../../assets/loading.gif";
+
+import {
+  Main,
+  DivTable,
+  SearchInput,
+  InputDiv,
+  Div,
+  LoadingImage,
+} from "./styles";
 
 const blue = {
   200: "#A5D8FF",
@@ -135,17 +145,21 @@ export default function Logs() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { codService, barCode } = formFields;
 
   const setCode = new Set();
 
   async function onServiceSearch() {
+    setLoading(true);
     if (codService < 3) {
+      setLoading(false);
       return;
     }
     const response = await getPerService(codService);
-    console.log(response);
+    setLoading(false);
+
     setData(response.data.message);
   }
 
@@ -186,35 +200,38 @@ export default function Logs() {
       <DivTable>
         <Div>
           <InputDiv>
+            <SearchInput
+              name="codService"
+              value={codService}
+              onChange={handleChange}
+              placeholder="Pesquise pelo serviço"
+            />
             <img
               onClick={() => {
                 setData([]);
                 onServiceSearch();
               }}
-              src={searchIcon}
-            />
-            <SearchInput
-              name="codService"
-              value={codService}
-              onChange={handleChange}
-              placeholder="Pesquise serviço"
+              src={SearchIcon}
+              alt="ícone de pesquisa"
             />
           </InputDiv>
           <InputDiv>
-            <img
-              onClick={() => {
-                setData([]);
-                onBarCodeSearch();
-              }}
-              src={searchIcon}
-            />
             <SearchInput
               name="barCode"
               value={barCode}
               onChange={handleChange}
               placeholder="Pesquise código de barras"
             />
+            <img
+              onClick={() => {
+                setData([]);
+                onBarCodeSearch();
+              }}
+              src={SearchIcon}
+              alt="ícone de pesquisa"
+            />
           </InputDiv>
+          {loading && <LoadingImage src={Loading} alt="Carregando" />}
         </Div>
 
         <Root sx={{ width: "95%" }}>
@@ -224,6 +241,8 @@ export default function Logs() {
                 <th>Código</th>
                 <th>Descrição da peça</th>
                 <th>Descrição do serviço</th>
+                <th>Laminação</th>
+                <th>Usinagem</th>
                 <th>Observação</th>
               </tr>
             </thead>
@@ -243,6 +262,30 @@ export default function Logs() {
                     </td>
                     <td style={{ width: 320 }} align="right">
                       {row.descricao_servico}
+                    </td>
+                    <td
+                      style={{
+                        width: 100,
+                      }}
+                      align="right"
+                    >
+                      {row?.laminacao?.realizado ? (
+                        <img src={Made} />
+                      ) : (
+                        <img src={NotMade} />
+                      )}
+                    </td>
+                    <td
+                      style={{
+                        width: 100,
+                      }}
+                      align="right"
+                    >
+                      {row?.usinagem?.realizado ? (
+                        <img src={Made} />
+                      ) : (
+                        <img src={NotMade} />
+                      )}
                     </td>
                     <td style={{ width: 320 }} align="right">
                       {row.observacao ? row.observacao : "Nenhuma observação"}
@@ -266,7 +309,7 @@ export default function Logs() {
                     25,
                     { label: "Todos", value: -1 },
                   ]}
-                  colSpan={4}
+                  colSpan={6}
                   count={barCodes.length}
                   rowsPerPage={rowsPerPage}
                   labelRowsPerPage={"Códigos por página"}

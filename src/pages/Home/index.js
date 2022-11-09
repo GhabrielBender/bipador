@@ -1,24 +1,26 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-import { Main, MainDiv, Input, ValidatorImage, Span, Button } from "./styles";
 import Correct from "../../assets/correct.png";
 import Errorr from "../../assets/error.jpg";
 import white from "../../assets/white.png";
-import { putCode } from "../../service/putCode";
 import Loading from "../../assets/loading.gif";
+
+import { putCode } from "../../service/putCode";
+
+import { Main, MainDiv, Input, ValidatorImage, Span } from "./styles";
 
 export default function Home() {
   const [valid, setValid] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const navigate = useNavigate();
 
-  async function wololo(event) {
+  async function handleSearch(event) {
+    if (event.code !== "Enter") return;
+
     setLoading(true);
-    setInputValue(event.target.value);
-    const response = await putCode(event.target.value);
+
+    const response = await putCode(inputValue);
 
     const status = response.data.message;
 
@@ -33,6 +35,10 @@ export default function Home() {
     }
   }
 
+  const handleChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
   return (
     <>
       <Main>
@@ -42,10 +48,11 @@ export default function Home() {
               {loading === false && (
                 <>
                   <Input
-                    value={inputValue}
                     autoFocus
+                    value={inputValue}
                     color={"#000"}
-                    onChange={wololo}
+                    onKeyDown={handleSearch}
+                    onChange={handleChange}
                   />
                   <ValidatorImage src={white} />
                 </>
@@ -58,9 +65,10 @@ export default function Home() {
                   <div>
                     <Input
                       autoFocus
-                      color={valid === "incorrect" ? "#e4011c" : "#3db39e"}
-                      onChange={wololo}
                       value={inputValue}
+                      color={valid === "incorrect" ? "#e4011c" : "#3db39e"}
+                      onKeyDown={handleSearch}
+                      onChange={handleChange}
                     />
                     <Span color={valid === "incorrect" ? "#e4011c" : "#3db39e"}>
                       {message}
@@ -75,17 +83,11 @@ export default function Home() {
           )}
           {loading && (
             <>
-              <Input autoFocus color={"#000"} onChange={wololo} />
+              <Input autoFocus color={"#000"} onChange={handleSearch} />
               {loading ? <img src={Loading} /> : <ValidatorImage src={white} />}
             </>
           )}
         </MainDiv>
-        <Button onClick={() => navigate("/Logs")}>
-          Ir para página dos logs
-        </Button>
-        <Button onClick={() => navigate("/Upload")}>
-          Ir para página de upload
-        </Button>
       </Main>
     </>
   );
